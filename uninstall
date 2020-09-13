@@ -3,8 +3,8 @@
 cd $user
 cd Música
 sudo rm -r meuplayer
-cd /usr/bin/mpdy
 
+sudo rm -r /usr/bin/mpdy
 
 echo " O mpdy foi desinstalado com sucesso "
 
