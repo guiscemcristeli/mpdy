@@ -32,7 +32,7 @@ Efetue o download dos arquivos
 	install
 
 
-entra na pasta de download 
+entrar na pasta de download 
 
 chmod +x install
 
