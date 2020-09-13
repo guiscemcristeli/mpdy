@@ -1,0 +1,57 @@
+#!/bin/bash
+# script para fedora
+echo " Install Músic Player Downlod "
+
+#sudo dnf install ffmpeg
+#sudo dnf install mpg123-libs
+#sudo dnf install youtube-dl
+
+
+mpg="/usr/bin/mpg123"
+ffm="/usr/bin/ffmpeg"
+you="/usr/bin/youtube-dl"
+
+mpgteste=$(which $mpg)
+
+if [ "$mpgteste" == "$mpg" ]; then
+        echo "Ok mpg123 esta instalado"
+        sleep 0.3
+else
+    	echo "  Você deve instalar o    $mpg    para  rodar o player "
+	dnf install mpg123-libs
+        sleep 0.3
+fi
+
+ffmteste=$(which $ffm)
+
+if [ "$ffmteste" == "$ffm" ]; then
+        echo "Ok $ffm esta instalado"
+        sleep 0.3
+else
+    	echo "  Você deve instalar o $ffm para  rodar o player "
+	dnf install ffmpeg
+        sleep 0.3
+fi
+
+youteste=$(which $you)
+
+if [ "$youteste" == "$you" ]; then
+        echo "Ok $you eta instalado"
+        sleep 0.3
+else
+    	echo "  Você deve instalar o $you para  rodar o player "
+	dnf install youtube-dl
+        sleep 0.3
+fi
+
+sudo su
+cd player /usr/bin/mpdy
+
+clear
+
+echo "Instalação de programas adicionais completada com sucesso !!!!!!!!!!!!!"
+sleep 1
+echo " Para chamar o programa via linha de comando digite: ...........  mpdy "
+sleep1
+
+echo " O Music Player Download Youtube foi instalado com SUCESSO  .....   !  "

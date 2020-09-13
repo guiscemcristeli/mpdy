@@ -1,0 +1,12 @@
+#!/bin/bash
+
+cd $user
+cd Música
+sudo rm -r meuplayer
+cd /usr/bin/mpdy
+
+
+echo " O mpdy foi desinstalado com sucesso "
+
+sleep 3
+

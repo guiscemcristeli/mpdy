@@ -1,0 +1,510 @@
+#!/bin/bash
+#=====================================================================================
+# Programador /                                  /
+# data 12 de setembro 2020 17:33:33
+# Versão 0.0
+# Instalação dependencias     README
+#=====================================================================================
+#                               DESCRIÇÃO DO PREOGRAMA
+#=====================================================================================
+#   Programa para baixar listas de  música do youtube  em formato mp4, mudar o formato
+#   para mp3  salvar em uma pasta  e reproduzir as musicas. O download pode ser feito
+#   através de um arquivo txt com a lista de links ou com a entrada dos links
+#   manualmente. É possível adicionar músicas nas pastas, remover pastas. O programa
+#   permite organizar as músicas baixadas em pastas e sub-pastas com as listas de
+#   nomes e links baixados
+#
+#   Para usar o programa é necessário baixar e instalar :
+#                                                         youtube-dl
+#                                                          mpg123
+#                                                           ffmpeg
+#  O programa verifica a existencia de arquivos na manipulação
+#  Verifica a validação de entrada das variáveis
+#  Salva a lista de links baixados e salva lista com nome das músicas nas pastas
+#=====================================================================================
+#                    BLOCO DE VARIÁVEIS UTILIZADAS NO PROGRMA
+#=====================================================================================
+opinicial=$() #opção do menu inicial  no modo    <<<   case  >>>>
+nomedalista=$() #entrada do diretio que recebe  o nome da pasta função ( Baixarlt)
+links=$()  # recebe o link de download para baixar a lista na função ( Baixarlt)
+final=$() # entrada de opção da função (fim)    <<<<<    case   >>>>>>
+list=$()  # entrada do nome da lista a ser reproduzida na função (Tocar)
+remover=$() # entrada do nome do diretosio ou lista a ser removido na função (remover)
+#=====================================================================================
+#                              DESCRIÇÃO DAS  FUNÇÕES
+#=====================================================================================
+#  Menu       comando = menu        exibe as opções de execuçãodo programa
+#  Tocar      comando = play        entra para repordução das músicas
+#  Baixarlt   comando = baixar      baixa a lista com entrada dos links
+#  download   comando = download    baixa a partir de uma lista de links existente
+#  remover    comando = remover     remove diretorios com músicas
+#  man        comando = man         descrição dos comandos  manula de operação
+#  fim        comando = fim         função de retorno ao fim de outras funções
+#  adicionar  comando = adicionar   adiciona músicas nas ṕastas existentes
+#  opc        entrada = *           retorna ao menu caso a entrada não seja valida
+#  dirconfig  entrada = dirconfig   verificações de inicialização do programa
+#  add        entrada = add         adicionar pasta no diretório de reprodução
+#  reproduzir entrada = reproduzir  função de reprodução utilizando o mpg123
+#=====================================================================================
+#                         COMANDOS PRINCIPAIS
+#=====================================================================================
+#| baixar =  inseriri o links fazer download e salvar em formato mp3       |"
+#| play   =  Navega nos diretorios  e tocas as músicas no diretorio mpr    |"
+#| download = faz o download com uma lista de links já existente em um txt |"
+#| remover  =  Remove um diretório com as músicas já baixadas              |"
+#| adicionar =  Adiciona músicas nas pastas que funcionam como playlist's  |"
+#| man  =  descrição dos comandos manual de utilização                     |"
+#| add = Adiciona uma pasta n diretório destinado a reprodução de múusicas |"
+#=====================================================================================
+#          			 INICIO  DO PROGRAMA
+#=====================================================================================
+clear
+echo -e "\033[01;36m==========================================================================="
+echo -e "\033[01;36m|                 mpdy      Music Player Download youtube                 |"
+echo -e "\033[01;36m==========================================================================="
+sleep 0.5
+echo " ..............."
+dirconfig(){
+cd $user
+cd Música
+dirbase='meuplayer'
+if [ -e "$dirbase" ]; then
+	echo " 	INICIANDO O Music Player Download Youtube   .................."
+	echo " Diretório $dirbase  existe"
+else
+	mkdir meuplayer
+	echo " Diretório $dirbase criado"
+fi
+
+mpg="/usr/bin/mpg123"
+ffm="/usr/bin/ffmpeg"
+you="/usr/bin/youtube-dl"
+
+mpgteste=$(which $mpg)
+
+if [ "$mpgteste" == "$mpg" ]; then
+	echo "Ok mpg123 esta instalado"
+	sleep 0.3
+else
+	echo "  Você deve instalar o    $mpg    para  rodar o player "
+	sleep 0.3
+fi
+
+ffmteste=$(which $ffm)
+
+if [ "$ffmteste" == "$ffm" ]; then
+        echo "Ok $ffm esta instalado"
+	sleep 0.3
+else
+    	echo "  Você deve instalar o $ffm para  rodar o player "
+	sleep 0.3
+fi
+
+youteste=$(which $you)
+
+if [ "$youteste" == "$you" ]; then
+        echo "Ok $you eta instalado"
+	sleep 0.3
+else
+    	echo "  Você deve instalar o $you para  rodar o player "
+	sleep 0.3
+fi
+
+
+}
+dirconfig
+sleep 0.5
+echo " Programa para baixar, escutar,  músicas e criar listas do youtube"
+sleep 0.5
+
+
+
+Menu(){
+clear
+echo -e "\033[01;36m==========================================================================="
+echo -e "\033[01;36m|    baixar      |        play        |   sair  |         download        |"
+echo -e "\033[01;36m==========================================================================="
+echo -e "\033[01;36m|       remover    |        adicionar     |     man      |      add       |"
+echo -e "\033[01;36m==========================================================================="
+
+read opinicial
+case "$opinicial" in
+	add) add ;;
+	baixar) Baixarlt ;;
+	download) download ;;
+	sair) saida ;;
+	play) Tocar ;;
+	adicionar) adicionar ;;
+	man) man ;;
+	remover) remover ;;
+	*) opc ;;
+esac
+}
+
+add(){
+	clear
+	echo -e "\033[01;36m==========================================================================="
+        echo -e "\033[01;36m|             ADICIONAR   PASTA DE MÚSICAS EXISTENTE NO SISTEMA           |"
+        echo -e "\033[01;36m==========================================================================="
+	echo -e "\033[01;36m Digite o nome da lista que deseja adicionar "
+	read novalista
+        echo -e "\033[01;36m==========================================================================="
+        echo -e "\033[01;36m|                  ENTRE COM O CAMINHO DA PASTA                           |"
+        echo -e "\033[01;36m==========================================================================="
+	read pasta
+	echo "$pasta"
+	cd $user
+	cp -r $pasta Música/meuplayer/$novalista
+	echo " Pasta  $novalista adicionada com sucesso .............."
+	fim
+
+}
+
+
+
+
+opc(){
+ echo " opção invalida"
+Menu
+}
+Baixarlt(){
+	clear
+	if ping -q -c 1 -W 1 8.8.8.8 >/dev/null; then
+  		echo "  Conexão Estabelecida"
+		sleep 1
+		clear
+	else
+		echo "IPv4 is down"
+		Menu
+	fi
+        echo -e "\033[01;36m============================================================================"
+	echo -e "\033[01;36m|              DIGITE O NOME DA LISTA QUE VOCÊ DESEJA CRIAR                |"
+        echo -e "\033[01;36m============================================================================"
+	read nomedalista
+	cd $user
+	cd Música
+	cd meuplayer
+	mkdir $nomedalista
+	cd $nomedalista
+	mkdir "$nomedalista"_MP4
+        mkdir "$nomedalista"_MP3
+	echo " Criando Lista de links para baixar"
+	cd "$nomedalista"_MP4
+	touch $nomedalista.lstmp4link
+	echo "Entre com o link para baixar e quando terminar digite Enter"
+	loop1=(1)
+	while [[ "loop1" -eq "1" ]]; do
+		read links
+		if [ "$loop1" -eq "1" ]; then
+                        echo "$links" >> $nomedalista.lstmp4link
+		fi
+		if [ "$links" == "" ]; then
+			loop1=0
+		else
+			loop1=1
+		fi
+	done
+	sed -i '$ d' "$nomedalista".lstmp4link
+	echo "Preparando para baixar as músicas"
+	for line in $(cat "$nomedalista".lstmp4link);
+	do
+	echo "$line"
+	youtube-dl --format mp4 "$line"
+	clear
+	done
+	echo "Converter arquivos em mp3"
+	cd ..
+	cd ..
+	mv $nomedalista/"$nomedalista"_MP4/$nomedalista.lstmp4link $nomedalista/$nomedalista.link
+	touch $nomedalista.lstmp4
+	ls $nomedalista/"$nomedalista"_MP4/ | tee $nomedalista.lstmp4
+	mv $nomedalista.lstmp4 $nomedalista/"$nomedalista"_MP4/$nomedalista.lstmp4
+	cd $nomedalista/"$nomedalista"_MP4
+	ls
+	while read -r line; do
+		echo "numero do loop"
+		nome=$(printf "'%s'\n" "$line")
+		echo "$nome"
+                linha1=$(echo "$nome" | cut -f '1' -d '.')
+		echo "$linha1"
+	done <"$nomedalista".lstmp4
+	for i in *.mp4;
+	do 
+	ffmpeg -i "$i" "${i%.*}.mp3"
+	clear
+	done
+	pwd
+	for arquivo in find *.mp3 ;
+	do
+	echo "aqui"
+	echo "$arquivo"
+	cd ..
+	mv "$nomedalista"_MP4/"$arquivo" "$nomedalista"_MP3/"$arquivo"
+	cd "$nomedalista"_MP4
+	done
+        echo -e "\033[01;36m============================================================================"
+	echo -e "\033[01;36m|          DESEJA REMOVER OS ARQUIVOS EM mp4 ?  (   sim    |    nao   )    |"
+        echo -e "\033[01;36m============================================================================"
+	read remov
+	if [ "$remov" == "sim" ]; then
+		rm -r "$nomedalista"_MP4
+	elif [ "$remov" == "nao" ]; then
+		echo " Os arquivos em mp4 não foram removidos"
+	else
+		echo " Opção invalida "
+	fi
+	echo " LISTA CRIADA COM SUCESSO"
+	clear
+	fim
+}
+reproduzir(){
+clear
+echo -e "\033[01;36m==========================================================================="
+echo -e "\033[01;36m| q = Sair  | f = Pula a Música  |  b = Volta a Música |  s = stop/start  |"
+echo -e "\033[01;36m==========================================================================="
+echo -e "\033[01;36m|                            Volume = ( + | - )                           |"
+echo -e "\033[01;36m==========================================================================="
+cd $list/"$list"_MP3
+echo "Reproduzindo a lista   $list .........."
+mpg123 -C * 1&> /dev/null 2&> /dev/null
+clear
+fim
+
+}
+
+
+
+Tocar(){
+	clear
+	cd $user
+	cd Música
+	cd meuplayer
+	echo -e "\033[01;36m==========================================================================="
+	echo -e "\033[01;36m|                     ABAIXO ESTÃO AS LISTAS DISPONÍVEIS                  |"
+	echo -e "\033[01;36m==========================================================================="
+	exib=$(ls | tee $mostrar)
+	echo "$exib"
+	echo -e "\033[01;36m==========================================================================="
+	echo -e "\033[01;36m| DIGITE O NOME DA LISTA QUE DESEJA REPRODUZIR     |   OU DIGITE voltar   |"
+	echo -e "\033[01;36m==========================================================================="
+	read list
+	if [ -e "$list" ]; then
+		reproduzir
+	elif [ "$list" == "voltar" ];then
+		fim
+	else
+		echo " Opção invalida"
+		Tocar
+	fi
+	fim
+
+}
+
+remover(){
+	clear
+	cd $user
+	cd Música/meuplayer
+	echo -e "\033[01;36m==========================================================================="
+	echo -e "\033[01;36m                     REMOVER LISTA DE REPORDUÇÃO                           "
+	echo -e "\033[01;36m==========================================================================="
+	ls
+	echo -e "\033[01;36m==========================================================================="
+	echo -e "\033[01;36m            DIGITE O NOME DA LISTA QUE DESEJA REMOVER                      "
+	read remove
+	if [ -e "$remove" ]; then
+		echo " OK "
+	else
+		remover
+	fi
+        echo -e "\033[01;36m==========================================================================="
+        echo -e "\033[01;36m TEM CERTEZA QUE DESEJA REMOVER A LISTA    $remove   (   sim  |   nao   )  "
+        echo -e "\033[01;36m==========================================================================="
+        read rem
+
+	if [ "$rem" == "sim" ]; then
+		rm -r $remove
+	elif [ "$rem" == "nao" ]; then
+		echo " Playlist $remove não removia"
+	else
+		echo "Opção invalida NADA FOI ALTERADO"
+	fi
+	fim
+}
+
+download(){
+	clear
+	echo -e "\033[01;36m============================================================================"
+	echo -e "\033[01;36m             BAIXAR LISTA DE LINKS JÁ EXISTENTE                             "
+	echo -e "\033[01;36m============================================================================"
+	echo -e "\033[01;36mDIGITE O NOME DA LISTA QUE VOCÊ DESEJA CRIAR"
+        echo -e "\033[01;36m============================================================================"
+        read nomedalista
+        cd $useR
+        cd Música
+        cd meuplayer
+        mkdir $nomedalista
+        cd $nomedalista
+        mkdir "$nomedalista"_MP4
+        mkdir "$nomedalista"_MP3
+	cd "$nomedalista"_MP4
+        touch $nomedalista.lstmp4link
+        echo -e "\033[01;36m============================================================================"
+ 	echo -e "\033[01;36m         ENTRRE COM O CAMINHO DO DIRETORIO E O NOME DA LISTA                "
+	echo -e "\033[01;36m============================================================================"
+	read trilha
+	cat "$trilha" | tee $nomedalista.lstmp4link
+	echo "Preparando para baixar as músicas"
+        for line in $(cat "$nomedalista".lstmp4link);
+        do
+        echo "$line"
+        youtube-dl --format mp4 "$line"
+	clear
+        done
+        echo "Converter arquivos em mp3"
+	cd ..
+        cd ..
+        mv $nomedalista/"$nomedalista"_MP4/$nomedalista.lstmp4link $nomedalista/$nomedalista.link
+        touch $nomedalista.lstmp4
+        ls $nomedalista/"$nomedalista"_MP4/ | tee $nomedalista.lstmp4
+        mv $nomedalista.lstmp4 $nomedalista/"$nomedalista"_MP4/$nomedalista.lstmp4
+        cd $nomedalista/"$nomedalista"_MP4
+        ls
+	while read -r line; do
+                echo "numero do loop"
+                nome=$(printf "'%s'\n" "$line")
+                echo "$nome"
+                linha1=$(echo "$nome" | cut -f '1' -d '.')
+                echo "$linha1"
+        done <"$nomedalista".lstmp4
+	for i in *.mp4;
+        do 
+	ffmpeg -i "$i" "${i%.*}.mp3"
+	clear
+        done
+        pwd
+        for arquivo in find *.mp3 ;
+        do
+	echo "aqui"
+        echo "$arquivo"
+        cd ..
+	mv "$nomedalista"_MP4/"$arquivo" "$nomedalista"_MP3/"$arquivo"
+        cd "$nomedalista"_MP4
+        done
+	echo -e "\033[01;36m==========================================================================="
+        echo -e "\033[01;36m|         DESEJA REMOVER OS ARQUIVOS EM mp4 ?  (    sim   |    nao    )   |"
+        echo -e "\033[01;36m==========================================================================="
+        read remov
+        if [ "$remov" == "sim" ]; then
+                rm -r "$nomedalista"_MP4
+        elif [ "$remov" == "nao" ]; then
+                echo " Os arquivos em mp4 não foram removidos"
+        else
+            	echo " Opção invalida "
+        fi
+	echo " LISTA CRIADA COM SUCESSO"
+	clear
+        fim
+}
+
+adicionar(){
+	clear
+	cd $user
+        cd Música/meuplayer
+	echo -e "\033[01;36m==========================================================================="
+	echo -e "\033[01;36m|             ADICIONAR   MÚSICAS A UMA LISTA DE REPORDUÇÃO               |"
+	echo -e "\033[01;36m==========================================================================="
+	ls
+	echo -e "\033[01;36m==========================================================================="
+	echo -e "\033[01;36m|                  ENTRE COM NOME DA LISTA QUE DESEJA ADCIONAR A MÚSICA   |"
+        echo -e "\033[01;36m==========================================================================="
+	read nomedalista
+	if [ -e "$nomedalista" ]; then
+		cd $nomedalista
+	else
+		adicionar
+	fi
+	mkdir "$nomedalista"_tdir
+        cd "$nomedalista"_tdir
+        ls
+	echo -e "\033[01;36m==========================================================================="
+	echo -e "\033[01;36m|                    Entre  com o link da Música                          |"
+	echo -e "\033[01;36m==========================================================================="
+	read lenk
+	youtube-dl --format mp4 "$lenk"
+	clear
+	cd ..
+	echo "$lenk" >> $nomedalista.link
+	cd "$nomedalista"_tdir
+	ls | tee feld
+	cd ..
+	echo "$feld" >> "$nomedalista"_MP4/$nomedalista.lstmp4
+	cd "$nomedalista"_tdir
+	for i in *.mp4;
+        do 
+	ffmpeg -i "$i" "${i%.*}.mp3"
+        clear
+	done
+	pwd
+	for arquivo in find *.mp3 ;
+        do
+	echo "aqui"
+        echo "$arquivo"
+        cd ..
+	mv "$nomedalista"_tdir/"$arquivo" "$nomedalista"_MP3/"$arquivo"
+        cd "$nomedalista"_tdir
+        done
+	for arquivo in find *.mp4 ;
+        do
+	echo "aqui"
+        echo "$arquivo"
+        cd ..
+	mv "$nomedalista"_tdir/"$arquivo" "$nomedalista"_MP4/"$arquivo"
+        cd "$nomedalista"_tdir
+        done
+	cd ..
+        rm -r "$nomedalista"_tdir
+	clear
+	fim
+
+}
+
+fim(){
+echo -e "\033[01;36m==========================================================================="
+echo -e "\033[01;36m|  sair  |  menu  |  baixar  | remover |  play  | adicionar |  man  | add |"
+echo -e "\033[01;36m==========================================================================="
+read final
+case "$final" in
+	add) add ;;
+	play) Tocar ;;
+	adicionar) adicionar ;;
+	man) man ;;
+	menu) Menu ;;
+	baixar) Baixarlt ;;
+	remover) remover ;;
+	sair) saida ;;
+	*) opc ;; 
+esac
+}
+
+man(){
+	clear
+        echo "                                                                           "
+        echo "==========================================================================="
+	echo "| baixar =  inseriri o links fazer download e salvar em formato mp3       |"
+	echo "| play   =  Navega nos diretorios  e tocas as músicas no diretorio mpr    |"
+	echo "| download = faz o download com uma lista de links já existente em um txt |"
+	echo "| remover  =  Remove um diretório com as músicas já baixadas              |"
+	echo "| adicionar =  Adiciona músicas nas pastas que funcionam como playlist's  |"
+	echo "| man  =  descrição dos comandos manual de utilização                     |"
+        echo "==========================================================================="
+	echo "                                                                           "
+	fim
+}
+saida(){
+	clear
+	exit
+}
+Menu
+#=====================================================================================
+#                                  FOM DO PROGRAMA
+#=====================================================================================
