@@ -1,9 +1,9 @@
 #!/bin/bash
 #=====================================================================================
-# Programador /                  Tucano   papai engenheiro kkkkkk               /
+# Programador /                  Tucano   papai engenheiro kkkkkk       CMGC      /
 # data 12 de setembro 2020 17:33:33
 # Versão 0.0
-# Instalação dependencias     README
+# Instalação dependencias ( Programas )    README.txt
 #=====================================================================================
 #                               DESCRIÇÃO DO PREOGRAMA
 #=====================================================================================
@@ -22,7 +22,7 @@
 #  Verifica a validação de entrada das variáveis
 #  Salva a lista de links baixados e salva lista com nome das músicas nas pastas
 #=====================================================================================
-#                    BLOCO DE VARIÁVEIS UTILIZADAS NO PROGRMA
+#                    BLOCO DE VARIÁVEIS UTILIZADAS NO PROGRMA ( Principais )
 #=====================================================================================
 opinicial=$() #opção do menu inicial  no modo    <<<   case  >>>>
 nomedalista=$() #entrada do diretio que recebe  o nome da pasta função ( Baixarlt)
@@ -54,7 +54,7 @@ remover=$() # entrada do nome do diretosio ou lista a ser removido na função (
 #| remover  =  Remove um diretório com as músicas já baixadas              |"
 #| adicionar =  Adiciona músicas nas pastas que funcionam como playlist's  |"
 #| man  =  descrição dos comandos manual de utilização                     |"
-#| add = Adiciona uma pasta n diretório destinado a reprodução de múusicas |"
+#| add = Adiciona uma pasta no diretório destinado a reprodução de múusicas|"
 #=====================================================================================
 #          			 INICIO  DO PROGRAMA
 #=====================================================================================
@@ -490,8 +490,8 @@ man(){
 	clear
         echo "                                                                           "
         echo "==========================================================================="
-	echo "| baixar =  inseriri o links fazer download e salvar em formato mp3       |"
-	echo "| play   =  Navega nos diretorios  e tocas as músicas no diretorio mpr    |"
+	echo "| baixar =  inserir o links fazer download e salvar em formato mp3        |"
+	echo "| play   =  Navega nos diretorios  e tocas as músicas no diretorio mp3    |"
 	echo "| download = faz o download com uma lista de links já existente em um txt |"
 	echo "| remover  =  Remove um diretório com as músicas já baixadas              |"
 	echo "| adicionar =  Adiciona músicas nas pastas que funcionam como playlist's  |"
@@ -506,5 +506,5 @@ saida(){
 }
 Menu
 #=====================================================================================
-#                                  FOM DO PROGRAMA
+#                                  FIM DO PROGRAMA
 #=====================================================================================
