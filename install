@@ -45,13 +45,15 @@ else
 fi
 
 sudo su
-cd player /usr/bin/mpdy
+cp player /usr/bin/mpdy
 
 clear
 
 echo "Instalação de programas adicionais completada com sucesso !!!!!!!!!!!!!"
 sleep 1
 echo " Para chamar o programa via linha de comando digite: ...........  mpdy "
-sleep1
+sleep 1
 
 echo " O Music Player Download Youtube foi instalado com SUCESSO  .....   !  "
+
+sleep 3
