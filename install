@@ -1,5 +1,5 @@
 #!/bin/bash
-# script para fedora
+# script para instalar no fedora 
 echo " Install Músic Player Downlod "
 
 #sudo dnf install ffmpeg
